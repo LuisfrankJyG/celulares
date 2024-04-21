@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscador en Tiempo Real</title>
+<style>
+  #searchInput {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    background-color: #333; /* Cambio a un color de fondo gris oscuro */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Bordes redondeados */
+    color: #fff; /* Color de texto blanco */
+  }
+
+  #resultsContainer {
+    display: none;
+    position: absolute;
+    width: 300px;
+    background-color: #333; /* Color de fondo gris oscuro */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Bordes redondeados */
+    z-index: 1;
+    color: #fff; /* Color de texto blanco */
+  }
+
+  .resultItem {
+    padding: 10px;
+    cursor: pointer;
+    color: #999; /* Cambio a un color de texto negro grisáceo */
+  }
+
+  .resultItem:hover {
+    background-color: #444; /* Cambio de color al pasar el ratón */
+  }
+  body{
+    background: url(img/header.png);
+  }
+</style>
+</head>
+<body>
+
+<input type="text" id="searchInput" placeholder="Buscar...">
+<div id="resultsContainer"></div>
+<a href="index.html">Volver a la pagina principal...</a>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const resultsContainer = document.getElementById('resultsContainer');
+
+  // Datos de ejemplo
+  const data = [
+    { name: "iPhone X", url: "https://www.apple.com/es/newsroom/2017/09/the-future-is-here-iphone-x/" },
+    { name: "LG V30", url: "https://www.lg.com/es/posventa/guias-y-soluciones/movil/v30-componentes-y-colores"}, 
+    { name: "Asus Zenfone Max Pro M1", url: "https://www.asus.com/my/mobile-handhelds/phones/all-series/zenfone-max-pro-zb602kl/" },
+    { name: "Huawei Mate 10 Pro", url: "https://consumer.huawei.com/latin/support/phones/mate10-pro/" },
+    { name: "Nokia 7 plus", url: "https://www.hmd.com/es_es/support/nokia-7-plus-user-guide/keep-your-phone-up-to-date" },
+    { name: "OnePlus 6", url: "https://www.oneplus.com/es/6" },
+    { name: "Samsung Galaxy A50", url: "https://www.samsung.com/latin/smartphones/galaxy-a/galaxy-a50-blue-64gb-sm-a505gzbjtpa/" },
+    { name: "Xiaomi Redmi Note 5 Pro", url: "https://www.mi.com/in/redmi-note-5-pro/" },
+    { name: "Volver a la pagina principal..", url: "index.html" },
+  ];
+
+  // Función para actualizar los resultados del buscador
+  function updateResults(query) {
+    resultsContainer.innerHTML = ''; // Limpiar el contenedor de resultados
+
+    if (query.trim() === '') {
+      resultsContainer.style.display = 'none';
+      return; // No hacer nada si la consulta está vacía
+    }
+
+    // Filtrar los elementos que coinciden con la consulta
+    const filteredResults = data.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
+
+    // Mostrar los resultados filtrados
+    filteredResults.forEach(item => {
+      const resultItem = document.createElement('div');
+      resultItem.classList.add('resultItem');
+      resultItem.textContent = item.name;
+      // Agregar evento de clic para redireccionar a la página correspondiente
+      resultItem.addEventListener('click', () => {
+        window.location.href = item.url;
+      });
+      resultsContainer.appendChild(resultItem);
+    });
+
+    // Mostrar el contenedor de resultados si hay resultados
+    if (filteredResults.length > 0) {
+      resultsContainer.style.display = 'block';
+    } else {
+      resultsContainer.style.display = 'none';
+    }
+  }
+
+  // Evento de entrada en el campo de búsqueda
+  searchInput.addEventListener('input', (event) => {
+    updateResults(event.target.value);
+  });
+</script>
+
+</body>
+</html>
